@@ -3,7 +3,7 @@
 //
 // This sample shows how an ID3DXMesh object can be created from mesh data stored in an 
 // .obj file. It's convenient to use .x files when working with ID3DXMesh objects since 
-// D3DX can create and fill an ID3DXMesh object directly from an .x file; however, it’s 
+// D3DX can create and fill an ID3DXMesh object directly from an .x file; however, itï¿½s 
 // also easy to initialize an ID3DXMesh object with data gathered from any file format 
 // or memory resource.
 //
@@ -232,7 +232,7 @@ HRESULT CALLBACK OnD3D10CreateDevice( ID3D10Device* pd3dDevice, const DXGI_SURFA
     pd3dDevice->IASetInputLayout( g_pVertexLayout );
 
     // Load the mesh
-    V_RETURN( g_MeshLoader.Create( pd3dDevice, L"media\\cup.obj" ) );
+    V_RETURN( g_MeshLoader.Create( pd3dDevice, L"media\\Tire.obj" ) );
 
     // Add the identified subsets to the UI
     CDXUTComboBox* pComboBox = g_SampleUI.GetComboBox( IDC_SUBSET );
