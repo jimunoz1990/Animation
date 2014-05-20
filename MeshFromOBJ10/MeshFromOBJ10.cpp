@@ -232,7 +232,7 @@ HRESULT CALLBACK OnD3D10CreateDevice( ID3D10Device* pd3dDevice, const DXGI_SURFA
     pd3dDevice->IASetInputLayout( g_pVertexLayout );
 
     // Load the mesh
-    V_RETURN( g_MeshLoader.Create( pd3dDevice, L"media\\Tire.obj" ) );
+    V_RETURN( g_MeshLoader.Create( pd3dDevice, L"media\\car.obj" ) );
 
     // Add the identified subsets to the UI
     CDXUTComboBox* pComboBox = g_SampleUI.GetComboBox( IDC_SUBSET );
