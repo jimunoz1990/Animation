@@ -3,7 +3,7 @@
 //
 // This sample shows how an ID3DXMesh object can be created from mesh data stored in an 
 // .obj file. It's convenient to use .x files when working with ID3DXMesh objects since 
-// D3DX can create and fill an ID3DXMesh object directly from an .x file; however, it�s 
+// D3DX can create and fill an ID3DXMesh object directly from an .x file; however, it’s 
 // also easy to initialize an ID3DXMesh object with data gathered from any file format 
 // or memory resource.
 //
@@ -266,7 +266,7 @@ HRESULT CALLBACK OnD3D10CreateDevice( ID3D10Device* pd3dDevice, const DXGI_SURFA
 
     // Setup the camera's view parameters
     D3DXVECTOR3 vecEye( 2.0f, 1.0f, 0.0f );
-    D3DXVECTOR3 vecAt ( 0.0f, 0.0f, -0.0f );
+    D3DXVECTOR3 vecAt ( 0.0f, 0.0f, 0.0f );
     g_Camera.SetViewParams( &vecEye, &vecAt );
 
     return S_OK;
@@ -339,8 +339,8 @@ void CALLBACK OnD3D10FrameRender( ID3D10Device* pd3dDevice, double fTime, float 
     V( g_pWorldViewProjection->SetMatrix( (float*)&mWorldViewProjection ) );
     V( g_pWorld->SetMatrix( (float*)&mWorld ) );
     V( g_pTime->SetFloat( (float)fTime ) );
-    V( g_pCameraPosition->SetFloatVector( (float*)g_Camera.GetEyePt() ) );   
-
+    V( g_pCameraPosition->SetFloatVector( (float*)g_Camera.GetEyePt()));   
+	
     //
     // Set the Vertex Layout
     //
@@ -536,8 +536,9 @@ LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bo
         return 0;
     
     // Pass all remaining windows messages to camera so it can respond to user input
+	//This handles rotations and everything else as well with the mouse clicks
     g_Camera.HandleMessages( hWnd, uMsg, wParam, lParam );
-    
+
     return 0;
 }
 
@@ -546,10 +547,44 @@ LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bo
 //--------------------------------------------------------------------------------------
 void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserContext )
 {
+	D3DXVECTOR3 out(2,0,0);
+	D3DXVECTOR3 up(0,2,0);
+	D3DXVECTOR3 left(0,0,2);
+
+	D3DXVECTOR3 vecEye;
+    D3DXVECTOR3 vecAt;
+	vecEye= *g_Camera.GetEyePt();
+	vecAt=*g_Camera.GetLookAtPt();
     if( bKeyDown )
     {
         switch( nChar )
         {
+		case VK_LEFT:
+			vecEye-=left;
+			g_Camera.SetViewParams(&vecEye, &vecAt );
+			//OutputDebugStringW( L"Hello");
+			break;
+
+		case VK_RIGHT:
+			vecEye+=left;
+			g_Camera.SetViewParams(&vecEye, &vecAt ); break;
+
+		case VK_UP:
+			vecEye+=up;
+			g_Camera.SetViewParams(&vecEye, &vecAt ); break;
+
+		case VK_DOWN:
+			vecEye-=up;
+			g_Camera.SetViewParams(&vecEye, &vecAt ); break;
+			
+		case VK_TAB:
+			vecEye-=out;
+			g_Camera.SetViewParams(&vecEye, &vecAt ); break;
+
+		case VK_CONTROL:
+			vecEye+=out;
+			g_Camera.SetViewParams(&vecEye, &vecAt ); break;
+
         case VK_F1:
             g_bShowHelp = !g_bShowHelp; break;
         }
