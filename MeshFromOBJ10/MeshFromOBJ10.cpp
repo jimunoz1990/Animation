@@ -126,6 +126,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
     return DXUTGetExitCode();
 }
 
+
 //--------------------------------------------------------------------------------------
 // Initialize the app 
 //--------------------------------------------------------------------------------------
@@ -199,7 +200,7 @@ HRESULT CALLBACK OnD3D10CreateDevice( ID3D10Device* pd3dDevice, const DXGI_SURFA
 
     // Obtain the technique
     g_pTechnique = g_pEffect10->GetTechniqueByName( "NoSpecular" );
-    g_ptxDiffuseVariable = g_pEffect10->GetVariableByName( "g_MeshTexture" )->AsShaderResource();    
+    g_ptxDiffuseVariable = g_pEffect10->GetVariableByName( "g_MeshTexture" )->AsShaderResource(); 
     
     g_pAmbient = g_pEffect10->GetVariableByName( "g_vMaterialAmbient" )->AsVector();
     g_pDiffuse = g_pEffect10->GetVariableByName( "g_vMaterialDiffuse" )->AsVector();
@@ -333,11 +334,13 @@ void CALLBACK OnD3D10FrameRender( ID3D10Device* pd3dDevice, double fTime, float 
     mView = *g_Camera.GetViewMatrix();
     mProj = *g_Camera.GetProjMatrix();
 
+	D3DXMatrixRotationY(&mWorld,fTime);
+
     mWorldViewProjection = mWorld * mView * mProj;
 
     // Update the effect's variables. 
     V( g_pWorldViewProjection->SetMatrix( (float*)&mWorldViewProjection ) );
-    V( g_pWorld->SetMatrix( (float*)&mWorld ) );
+    V( g_pWorld->SetMatrix( (float*)&mWorld));
     V( g_pTime->SetFloat( (float)fTime ) );
     V( g_pCameraPosition->SetFloatVector( (float*)g_Camera.GetEyePt()));   
 	
