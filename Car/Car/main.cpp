@@ -150,7 +150,7 @@ typedef struct
 } PARTICLES;
 
 PARTICLES particle[NUM_OBJECTS][MAX_PARTICLES];
-const int PARTICLE_LIFETIME = 1000;
+const int PARTICLE_LIFETIME = 500;
 
 void initParticles(int id)
 {
@@ -372,14 +372,13 @@ void makeCar(dReal x, dReal y, int &bodyI, int &jointI, int &boxI, int &sphereI)
 	dMassAdjust (&m,CMASS/2.0);
 	dBodySetMass (body[bodyI],&m);
 
-	// TODO: change indices format
 	tridata = dGeomTriMeshDataCreate();
 	objReader.readObj("../models/car.obj", nVerts, &vertices, &normals, &texcoords, nIndices, &indices);
-	//dGeomTriMeshDataBuildSimple(tridata, (dReal*)vertices, nVerts, (dTriIndex*)indices, nIndices);
-	//car = dCreateTriMesh(space, tridata, NULL, NULL, NULL);
-	//dGeomSetData(car, tridata);
-	//box[boxI] = dCreateTriMesh(space, tridata, NULL, NULL, NULL);
-	box[boxI] = dCreateBox (space,LENGTH,WIDTH,HEIGHT);
+	dGeomTriMeshDataBuildSingle(tridata, vertices, 3 * sizeof(float), nVerts, indices, nIndices, 3 * sizeof(dTriIndex));
+	car = dCreateTriMesh(space, tridata, NULL, NULL, NULL);
+	dGeomSetData(car, tridata);
+	box[boxI] = car;
+	//box[boxI] = dCreateBox (space,LENGTH,WIDTH,HEIGHT);
 	dGeomSetBody (box[boxI],body[bodyI]);
 
 	// wheel bodies
@@ -810,10 +809,10 @@ static void simLoop (int pause)
 		local_matrix[15] = 1;
 		glMultMatrixf(local_matrix);
 		
-		glScalef(1.5f, 1.5f, 1.5f);
+		//glScalef(1.5f, 1.5f, 1.5f);
 
-		glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
-		glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+		//glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+		//glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 
 		drawObject();
 	glPopMatrix();
