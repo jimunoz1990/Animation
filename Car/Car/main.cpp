@@ -364,10 +364,13 @@ void makeCar(dReal x, dReal y, int &bodyI, int &jointI, int &boxI, int &sphereI)
 {
 	int i;
 	dMass m;
+	dMatrix3 R;
 	
 	// chassis body
 	body[bodyI] = dBodyCreate (world);
 	dBodySetPosition (body[bodyI],x,y,STARTZ);
+	dRFromEulerAngles(R,M_PI/2,M_PI/2,M_PI);
+	dBodySetRotation (body[bodyI], R);
 	dMassSetBox (&m,1,LENGTH,WIDTH,HEIGHT);
 	dMassAdjust (&m,CMASS/2.0);
 	dBodySetMass (body[bodyI],&m);
@@ -378,7 +381,6 @@ void makeCar(dReal x, dReal y, int &bodyI, int &jointI, int &boxI, int &sphereI)
 	car = dCreateTriMesh(space, tridata, NULL, NULL, NULL);
 	dGeomSetData(car, tridata);
 	box[boxI] = car;
-	//box[boxI] = dCreateBox (space,LENGTH,WIDTH,HEIGHT);
 	dGeomSetBody (box[boxI],body[bodyI]);
 
 	// wheel bodies
