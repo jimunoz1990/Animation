@@ -319,9 +319,7 @@ static void nearCallback (void *data, dGeomID o1, dGeomID o2)
 	dContact contact[N];
 	n = dCollide (o1,o2,N,&contact[0].geom,sizeof(dContact));
 	if (n > 0) {
-		
 		for (i=0; i<n; i++) {
-			drawParticles(i);
 			contact[i].surface.mode = dContactSlip1 | dContactSlip2 | dContactSoftERP | dContactSoftCFM | dContactApprox1;
 			if (dGeomGetClass(o1) == dSphereClass || dGeomGetClass(o2) == dSphereClass)
 				contact[i].surface.mu = 20;
@@ -811,7 +809,9 @@ static void simLoop (int pause)
 		local_matrix[14] = pos[2];
 		local_matrix[15] = 1;
 		glMultMatrixf(local_matrix);
-			
+		
+		glScalef(1.5f, 1.5f, 1.5f);
+
 		glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
 		glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 
