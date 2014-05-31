@@ -340,7 +340,7 @@ void CALLBACK OnD3D10FrameRender( ID3D10Device* pd3dDevice, double fTime, float 
 
     // Update the effect's variables. 
     V( g_pWorldViewProjection->SetMatrix( (float*)&mWorldViewProjection ) );
-    V( g_pWorld->SetMatrix( (float*)&mWorld));
+    V( g_pWorld->SetMatrix( (float*)&mWorld ));
     V( g_pTime->SetFloat( (float)fTime ) );
     V( g_pCameraPosition->SetFloatVector( (float*)g_Camera.GetEyePt()));   
 	
@@ -366,7 +366,7 @@ void CALLBACK OnD3D10FrameRender( ID3D10Device* pd3dDevice, double fTime, float 
     }
 
     DXUT_BeginPerfEvent( DXUT_PERFEVENTCOLOR, L"HUD / Stats" );
-    RenderText();
+    //RenderText();
     g_HUD.OnRender( fElapsedTime );
     g_SampleUI.OnRender( fElapsedTime );    
     DXUT_EndPerfEvent();
