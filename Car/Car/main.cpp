@@ -364,24 +364,26 @@ void makeCar(dReal x, dReal y, int &bodyI, int &jointI, int &boxI, int &sphereI)
 {
 	int i;
 	dMass m;
-	dMatrix3 R;
 	
 	// chassis body
 	body[bodyI] = dBodyCreate (world);
 	dBodySetPosition (body[bodyI],x,y,STARTZ);
-	dRFromEulerAngles(R,M_PI/2,M_PI/2,M_PI);
-	dBodySetRotation (body[bodyI], R);
 	dMassSetBox (&m,1,LENGTH,WIDTH,HEIGHT);
 	dMassAdjust (&m,CMASS/2.0);
 	dBodySetMass (body[bodyI],&m);
-
+	dMatrix3 R;
+	dRFromEulerAngles(R,M_PI/2,M_PI/2,M_PI);
+    dBodySetRotation (body[bodyI],R);
+	
 	tridata = dGeomTriMeshDataCreate();
 	objReader.readObj("../models/car.obj", nVerts, &vertices, &normals, &texcoords, nIndices, &indices);
 	dGeomTriMeshDataBuildSingle(tridata, vertices, 3 * sizeof(float), nVerts, indices, nIndices, 3 * sizeof(dTriIndex));
 	car = dCreateTriMesh(space, tridata, NULL, NULL, NULL);
 	dGeomSetData(car, tridata);
 	box[boxI] = car;
+	//box[boxI] = dCreateBox (space,LENGTH,WIDTH,HEIGHT);
 	dGeomSetBody (box[boxI],body[bodyI]);
+	
 
 	// wheel bodies
 	for (i=1; i<=4; i++) {
@@ -701,11 +703,23 @@ static void command (int cmd)
 
 // simulation loop
 
+static float xyz[3];
+static float hpr[3];
+
 static void simLoop (int pause)
 {
+	const dReal *a = dGeomGetPosition(box[0]);
+	xyz[0] = a[0]+12;
+	xyz[1] = a[1];
+	xyz[2] = a[2]+4;
+
+	hpr[0] = 0;
+	hpr[1] = 180;
+	hpr[2] = 180;
+	dsSetViewpoint (xyz,hpr);
+
 	int i, j;
-		
-	dsSetTexture (DS_WOOD);
+	//dsSetTexture (DS_WOOD);
 
 	if (!pause) {
 #ifdef BOX
@@ -811,10 +825,10 @@ static void simLoop (int pause)
 		local_matrix[15] = 1;
 		glMultMatrixf(local_matrix);
 		
-		//glScalef(1.5f, 1.5f, 1.5f);
+		glScalef(1.5f, 1.5f, 1.5f);
 
 		//glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
-		//glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+		//glRotatef(180.0f, 0.0f,1.0f, 0.0f);
 
 		drawObject();
 	glPopMatrix();
