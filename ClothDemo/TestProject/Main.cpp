@@ -1,15 +1,4 @@
-/********************************************************************************************************
-*	A Cloth physics simulation program																	*
-*	By Nicholas Crook																					*
-*																										*
-*	based on work by:																					*
-*		Mosegaard <http://cg.alexandra.dk/2009/06/02/mosegaards-cloth-simulation-coding-tutorial/>		*
-*			Outline of class structure and application of force to cloth								*
-*		Hugo.Elias <http://freespace.virgin.net/hugo.elias/models/m_cloth.htm>							*
-*			Algorithm used to simulate cloth like behavior												*
-*		Ian Millington <http://procyclone.com/>															*
-*			Basis for integration based physics rather then timestep as Mosegaard uses					*
-*********************************************************************************************************/
+//Cloth simulation
 
 #include "Cloth.h"
 #include "FrameSaver.h"
@@ -17,8 +6,11 @@
   
 unsigned long lastUpdate;	// When was the last time we updated the cloth position
 Cloth cloth(8,8,40,40);		// The cloth fabric were operating on
-Vector3f ball_pos(3, -4,3.5);	// The location of the Ball the cloth lands on
-float ball_radius = 2;		// The size of the ball
+
+const int numBalls=2;
+Vector3f ball_pos[numBalls]={Vector3f(3, -4,3.5),Vector3f(1, -4,3.5)};
+float ball_radius[numBalls]={2,1};
+
 bool started = false;		// Wait until space bar has been pressed before dropping the cloth
 int Recording = 0 ;
 FrameSaver FrSaver ;
@@ -59,7 +51,7 @@ void idleFunc() {
 	// If the cloth has been droppede
 	if (started) {
 		// Apply a wind force to the cloth and calculate the pull of neighbouring particles
-		cloth.calculateForces(Vector3f(0.04, -0.02,0.02),ball_pos, ball_radius);
+		cloth.calculateForces(Vector3f(0.04, -0.02,0.02),ball_pos, ball_radius, numBalls);
 
 		// Get the current time so we can calculate how much time since the last update
 		// used when integrating the distance a particle has traveled
@@ -84,13 +76,14 @@ void display() {
 	cloth.draw();
 
 	// Move the ball then draw
-	glPushMatrix();
-	glTranslatef(ball_pos.getX(),ball_pos.getY(),ball_pos.getZ());
-	glColor3f(0.8f,0.3f,0.2f);
-	glutSolidSphere(ball_radius-0.1,50,50);
-	
+	for (int i=0; i<numBalls;i++){
+		glPushMatrix();
+		glTranslatef(ball_pos[i].getX(),ball_pos[i].getY(),ball_pos[i].getZ());
+		glColor3f(0.8f,0.3f,0.2f);
+		glutSolidSphere(ball_radius[i]-0.1,50,50);
+		glPopMatrix();
+	}
 
-	glPopMatrix();
 	glPushMatrix();
 	glColor3f(0.9f, 0.4f, 0.2f);
 	glTranslatef(0, -0.5, 0);

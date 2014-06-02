@@ -50,7 +50,7 @@ public:
 	void update(float duration);
 
 	// Calculate the spring forces for clothlike behavior
-	void calculateForces(const Vector3f &wind_dir, const Vector3f &ball_pos, float ball_radius);
+	void calculateForces(const Vector3f &wind_dir, const Vector3f ball_pos[], float ball_radius[], int numBalls);
 };
 
 #endif

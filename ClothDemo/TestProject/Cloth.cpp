@@ -182,7 +182,7 @@ void Cloth::groundCollision(const Vector3f &center, const float radius){
 }
 
 // Calculate the spring forces for clothlike behavior
-void Cloth::calculateForces(const Vector3f &wind_dir, const Vector3f &ball_pos, float ball_radius){
+void Cloth::calculateForces(const Vector3f &wind_dir, const Vector3f ball_pos[], float ball_radius[], int numBalls){
 	
 	// Apply gravity, wind and reset the normals
 	int num = (int)m_particles.size();
@@ -200,11 +200,12 @@ void Cloth::calculateForces(const Vector3f &wind_dir, const Vector3f &ball_pos, 
 		// Reset the normal, will recalculate after position is adjusted
 		p->setNormal(Vector3f(0,0,0));
 	}
-
-	ballCollision(ball_pos,ball_radius);	// resolve collision with the ball
-	groundCollision(ball_pos,ball_radius);	// ground collision
-	calculateClothNormals();				// Calculate new normals
-
+	for(int i =0; i < numBalls;i++)
+	{
+		ballCollision(ball_pos[i],ball_radius[i]);	// resolve collision with the ball
+		groundCollision(ball_pos[i],ball_radius[i]);	// ground collision
+		calculateClothNormals();				// Calculate new normals
+	}
 	// Calculate new forces
 	for (int x = 0; x < m_width; ++x) {
 		for (int y =0; y < m_height; ++y)
