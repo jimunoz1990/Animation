@@ -1,3 +1,6 @@
+#include <windows.h>
+#include <gl/GL.h>
+#include <gl/GLU.h>
 #ifndef __ObjReader_h__
 #define __ObjReader_h__
 
