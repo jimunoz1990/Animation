@@ -48,7 +48,7 @@ void init(GLvoid)
 }
 
 void idleFunc() {
-	// If the cloth has been droppede
+	// If the cloth has been dropped
 	if (started) {
 		// Apply a wind force to the cloth and calculate the pull of neighbouring particles
 		cloth.calculateForces(Vector3f(0.04, -0.02,0.02),ball_pos, ball_radius, numBalls);

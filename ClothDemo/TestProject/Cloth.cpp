@@ -115,7 +115,7 @@ void Cloth::ballCollision(const Vector3f &center, const float radius){
 		{   
 
 			m_particles[i].setPosition(v.normalized() * radius + center);
-			m_particles[i].mulVelocity(0.5);
+			m_particles[i].mulVelocity(0.8);
 			
 			//Add rotation force
 			if(rotate!=0)
@@ -123,12 +123,11 @@ void Cloth::ballCollision(const Vector3f &center, const float radius){
 				theta=acos(v.normalized().getZ()); // theta= acos(v.x)
 				Vector3f NewVel;
 				Vector3f temp=center;
-				NewVel.setZ( radius/100/max(m_particles[i].getPosition().getY()-temp.getY(),0.5)*sin(theta));
-				NewVel.setX( radius/100/max(m_particles[i].getPosition().getY()-temp.getY(),0.5)*cos(theta));
+				NewVel.setZ( radius/100/max(abs(m_particles[i].getPosition().getY()-temp.getY())/2,0.5)*sin(theta));
+				NewVel.setX( radius/100/max(abs(m_particles[i].getPosition().getY()-temp.getY())/2,0.5)*cos(theta));
 				NewVel.setY(0.0);
-				printf( "x: %f z: %f \n ", NewVel.getX(), NewVel.getZ());
+				//printf( "x: %f z: %f \n ", NewVel.getX(), NewVel.getZ());
 				m_particles[i].setVelocity(m_particles[i].getVelocity() + NewVel);
-					
 			}
 		}
 	}

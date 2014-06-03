@@ -28,6 +28,8 @@ Particle& Particle::operator= (const Particle& particle) {
 	m_stationary = particle.getStationary();
 	return *this;
 }
+Vector3f tempPos;
+Vector3f tempVel;
 
 // Move the Particle forward in time by applying acceleration to the velocity and moving the position by the velocity
 void Particle::integrate(float duration)
@@ -35,11 +37,13 @@ void Particle::integrate(float duration)
 	// If the object is moving forward in time and not stationary
 	if ((duration > 0) && (!m_stationary)){
 
+		tempVel=m_velocity;
+		tempVel+= (m_forceAccumulated * m_inverseMass) * duration/2; // velocity mid point
+
 		// Move forward by the specified duration
-		m_position += m_velocity * duration;
+
+		m_position += tempVel * duration;
 		m_velocity += (m_forceAccumulated * m_inverseMass) * duration;
-		//m_velocity.setX(m_velocity.getX()+.02);
-		//m_velocity.setY(m_velocity.getY()-.02);
 
 		m_forceAccumulated = Vector3f(0,0,0);
 
