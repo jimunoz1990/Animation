@@ -245,7 +245,7 @@ void Cloth::calculateForces(const Vector3f &wind_dir, const Vector3f ball_pos[],
 				}
 			}
 			
-			for (int i = 0; i < m_width; ++i) 
+			/*for (int i = 0; i < m_width; ++i) 
 			{
 				for (int j =0; j < m_height; ++j)
 				{
@@ -253,32 +253,32 @@ void Cloth::calculateForces(const Vector3f &wind_dir, const Vector3f ball_pos[],
 						Particle *p2 = getParticle(i,j);
 
 						// Get the direction this spring is pulling
-						Vector3f springVector = p2->getPosition() - p->getPosition();
+						Vector3f springVector = p->getPosition() - p2->getPosition();
 
 						// Find how much force is exerted by this string
 						float length = springVector.length();
-
-						//float normalLength= sqrt((p2->getPosition().getX()-p->getPosition().getX())*(p2->getPosition().getX()-p->getPosition().getX())+(p2->getPosition().getY()-p->getPosition().getY())*(p2->getPosition().getY()-p->getPosition().getY())+(p2->getPosition().getZ()-p->getPosition().getZ())*(p2->getPosition().getZ()-p->getPosition().getZ()));
-
-						if(length<0.05)
+						
+						if(length<0.10)
 						{
-							float normalLength=0.1;
+
+							p2->setPosition(springVector.normalized()*0.5+p->getPosition());
+							p2->mulVelocity(0.5);
+							
+							//float normalLength=5.0;
 							// Get the direction this spring is pulling
 							//Vector3f springVector = p2->getPosition() - p->getPosition();
 
 							// Find how much force is exerted by this string
 							//float length = springVector.length();
-							float forceScalar = (length - normalLength) / normalLength;
+							//float forceScalar = (length - normalLength) / length;
 
 							// Add the force this particle is applying to the other particle forces
-							springForce += springVector / length  * forceScalar;
-							squares++;
-							springForce += springVector / length  * forceScalar;
+							//springForce += springVector / length  * forceScalar;
 						}
 
 					}
 				}
-			}
+			}*/
 
 			// If a spring is stretched beyond 20% we will begin to minimize the effects of other forces to maintain the cloth shape
 			if (largestStretch >= 0.2){
