@@ -179,6 +179,10 @@ void Cloth::groundCollision(const Vector3f &center, const float radius){
 		}
 	}
 }
+float distance(Vector3f a, Vector3f b)
+{
+	return sqrt((a.getX()-b.getX())*(a.getX()-b.getX())+(a.getY()-b.getY())*(a.getY()-b.getY())+(a.getZ()-b.getZ())*(a.getZ()-b.getZ()));
+}
 
 // Calculate the spring forces for clothlike behavior
 void Cloth::calculateForces(const Vector3f &wind_dir, const Vector3f ball_pos[], float ball_radius[], int numBalls){
@@ -238,6 +242,41 @@ void Cloth::calculateForces(const Vector3f &wind_dir, const Vector3f ball_pos[],
 							largestStretch = forceScalar;
 						}
 					} 
+				}
+			}
+			
+			for (int i = 0; i < m_width; ++i) 
+			{
+				for (int j =0; j < m_height; ++j)
+				{
+					if(i!=x && j!=y){
+						Particle *p2 = getParticle(i,j);
+
+						// Get the direction this spring is pulling
+						Vector3f springVector = p2->getPosition() - p->getPosition();
+
+						// Find how much force is exerted by this string
+						float length = springVector.length();
+
+						//float normalLength= sqrt((p2->getPosition().getX()-p->getPosition().getX())*(p2->getPosition().getX()-p->getPosition().getX())+(p2->getPosition().getY()-p->getPosition().getY())*(p2->getPosition().getY()-p->getPosition().getY())+(p2->getPosition().getZ()-p->getPosition().getZ())*(p2->getPosition().getZ()-p->getPosition().getZ()));
+
+						if(length<0.05)
+						{
+							float normalLength=0.1;
+							// Get the direction this spring is pulling
+							//Vector3f springVector = p2->getPosition() - p->getPosition();
+
+							// Find how much force is exerted by this string
+							//float length = springVector.length();
+							float forceScalar = (length - normalLength) / normalLength;
+
+							// Add the force this particle is applying to the other particle forces
+							springForce += springVector / length  * forceScalar;
+							squares++;
+							springForce += springVector / length  * forceScalar;
+						}
+
+					}
 				}
 			}
 

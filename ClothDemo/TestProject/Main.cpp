@@ -5,7 +5,7 @@
 #include "glut.h"
   
 unsigned long lastUpdate;	// When was the last time we updated the cloth position
-Cloth cloth(8,8,40,40);		// The cloth fabric were operating on
+Cloth cloth(7,7,30,30);		// The cloth fabric were operating on
 
 const int numBalls=2;
 Vector3f ball_pos[numBalls]={Vector3f(3, -4,3.5),Vector3f(1, -4,3.5)};
